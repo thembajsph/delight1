@@ -1,0 +1,45 @@
+{
+  "_comment": "REPLACE THIS FILE with the real google-services.json downloaded from Google Cloud Console",
+  "_instructions": [
+    "1. Go to https://console.cloud.google.com",
+    "2. APIs & Services → Credentials → + Create Credentials → OAuth Client ID",
+    "3. Application type: Android",
+    "4. Package name: africa.delight.app",
+    "5. SHA-1: run  keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android",
+    "6. Download google-services.json and replace this file"
+  ],
+  "project_info": {
+    "project_number": "YOUR_PROJECT_NUMBER",
+    "project_id": "delight-africa",
+    "storage_bucket": "delight-africa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:YOUR_PROJECT_NUMBER:android:YOUR_APP_ID",
+        "android_client_info": {
+          "package_name": "africa.delight.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "africa.delight.app",
+            "certificate_hash": "YOUR_SHA1_WITHOUT_COLONS"
+          }
+        },
+        {
+          "client_id": "YOUR_WEB_CLIENT_ID.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "YOUR_ANDROID_API_KEY"
+        }
+      ]
+    }
+  ]
+}

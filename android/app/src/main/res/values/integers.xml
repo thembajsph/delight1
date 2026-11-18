@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Generated from google-services.json — Google OAuth Web Client ID -->
+    <!-- This must match the client_id in your google-services.json -->
+    <integer name="default_web_client_id">0</integer>
+</resources>

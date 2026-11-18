@@ -1,0 +1,8 @@
+{
+  "applinks": {
+    "details": [{
+      "appIDs": ["REPLACE_TEAMID.africa.delight.app"],
+      "components": [{ "/": "/rsvp/*" }, { "/": "/pay/*" }]
+    }]
+  }
+}

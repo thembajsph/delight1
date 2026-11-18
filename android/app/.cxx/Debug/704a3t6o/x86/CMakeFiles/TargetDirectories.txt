@@ -1,0 +1,2 @@
+/home/thembajsph/Videos/delight-app/delight/android/app/.cxx/Debug/704a3t6o/x86/CMakeFiles/edit_cache.dir
+/home/thembajsph/Videos/delight-app/delight/android/app/.cxx/Debug/704a3t6o/x86/CMakeFiles/rebuild_cache.dir

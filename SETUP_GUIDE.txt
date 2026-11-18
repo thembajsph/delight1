@@ -1,0 +1,334 @@
+# DELIGHT — COMPLETE SETUP GUIDE
+# Every account you need to create, every link, every fee explained
+# ═══════════════════════════════════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1: ACCOUNTS TO CREATE (do these in order)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────────────────────────────────────────────────────┐
+│  1. SUPABASE — Database, Auth, Storage, Realtime                │
+│  Link:    https://supabase.com                                  │
+│  Cost:    FREE up to 50,000 users, 500MB DB                     │
+│  What:    Your entire backend database lives here               │
+│  Do:      Click "Start for free" → create project               │
+│           → copy Project URL and anon key into env.dart         │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  2. RAILWAY — Backend hosting (your Node.js server)             │
+│  Link:    https://railway.app                                   │
+│  Cost:    $5/month (Hobby plan)                                 │
+│  What:    Runs your Node.js backend that processes payments     │
+│  Do:      Sign up → New Project → Deploy from GitHub            │
+│           → connect your repo → set environment variables       │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  3. XRPL TESTNET — Free test XRP (start here TODAY)             │
+│  Link:    https://faucet.altnet.rippletest.net                  │
+│  Cost:    FREE — get 1,000 test XRP instantly                   │
+│  What:    Practice real blockchain transactions with no risk     │
+│  Do:      Enter any XRP address → get 1000 free test XRP        │
+│           Your app is set to testnet by default                 │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  4. VALR — South African crypto exchange (ZAR ↔ XRP)           │
+│  Link:    https://valr.com                                      │
+│  Cost:    FREE account. 0.1% trading fee per transaction        │
+│  What:    Converts ZAR into XRP when users top up               │
+│           Converts XRP back to ZAR when users cash out          │
+│  Do:      Sign up → verify your SA ID (FICA required)           │
+│           → Dashboard → API → Create API key                    │
+│           → Permissions: VIEW + TRADE (not Withdraw)            │
+│           → Copy API Key and Secret into backend/.env           │
+│  Note:    VALR is FSCA registered — fully legal in SA           │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  5. MOONPAY — Easy ZAR→XRP widget (USE FIRST for MVP)          │
+│  Link:    https://dashboard.moonpay.com                         │
+│  Cost:    2–4% per transaction (they handle everything)         │
+│  What:    Drop-in payment widget. User pays ZAR → gets XRP.    │
+│           MoonPay handles KYC, compliance, ZAR payment, XRP    │
+│  Do:      Sign up → Create account → Get API keys              │
+│           → Use pk_test_ for testing, pk_live_ for production  │
+│           → Copy publishable key into env.dart                  │
+│  Why first: You can launch in days. No compliance work needed.  │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  6. OZOW — SA Instant EFT (switch to this from MoonPay)        │
+│  Link:    https://ozow.com/developers                           │
+│  Signup:  https://merchant.ozow.com/register                   │
+│  Cost:    1.5% per transaction                                  │
+│  What:    User pays from their FNB/Capitec/Standard Bank/ABSA  │
+│           directly. Money arrives in your account in <10 secs. │
+│  Banks:   FNB, Standard Bank, ABSA, Nedbank, Capitec,          │
+│           TymeBank, African Bank, Investec, Discovery Bank     │
+│  Do:      Apply as merchant → 3 business days to approve       │
+│           → Get Site Code, Private Key, API Key                │
+│           → Add to backend/.env                                 │
+│           → Set webhook URL to:                                 │
+│             https://api.delight.africa/webhooks/ozow            │
+│  USSD:    Ozow works with *120# USSD payments automatically.   │
+│           User dials code, approves, Ozow captures the EFT.    │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  7. STITCH MONEY — PayShap API (for scale)                      │
+│  Link:    https://stitch.money                                  │
+│  Docs:    https://docs.stitch.money                             │
+│  Cost:    ~1–1.5% (negotiated per volume)                       │
+│  What:    Gives you programmatic access to PayShap —            │
+│           SA's real-time payment rail (like India's UPI)        │
+│           All 11 major SA banks support PayShap                 │
+│  PayShap banks: ABSA, FNB, Nedbank, Standard Bank, Capitec,    │
+│           TymeBank, African Bank, Discovery, Investec, Sasfin  │
+│  Do:      Apply at stitch.money/contact → enterprise review    │
+│           takes 1–2 weeks → get client_id and secret           │
+│           → Add to backend/.env                                 │
+│  Note:    Use after Ozow is running. Stitch gives you PayShap  │
+│           programmatically at lower fees than Ozow.             │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  8. FIREBASE — Push notifications                               │
+│  Link:    https://console.firebase.google.com                   │
+│  Cost:    FREE (generous limits)                                │
+│  What:    Sends push notifications when:                        │
+│           • Money is added to wallet                            │
+│           • XRP payment received                                │
+│           • NFT ticket confirmed                                │
+│  Do:      Create project → Add Android app → Add iOS app       │
+│           → Download google-services.json → put in android/app/│
+│           → Download GoogleService-Info.plist → put in ios/Runner│
+│           → Create service account → download JSON              │
+│           → Add to backend/.env as FIREBASE_PRIVATE_KEY        │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  9. FSCA CASP REGISTRATION — Legal requirement for SA           │
+│  Link:    https://www.fsca.co.za/Regulated-Entities/Pages/      │
+│           Crypto-Asset-Service-Providers.aspx                   │
+│  Cost:    R1,000 application fee                                │
+│  What:    Crypto Asset Service Provider licence                 │
+│           Required in SA since June 2023 to operate            │
+│  Timeline: 4–8 weeks for approval                              │
+│  Do:      Register your business first → then apply            │
+│  Tip:     Use MoonPay for MVP — they are already FSCA licensed.│
+│           Apply for your own CASP while users are growing.     │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  10. SMILE IDENTITY — SA ID / KYC verification                  │
+│  Link:    https://usesmileid.com                                │
+│  Cost:    ~$0.50 per verification                               │
+│  What:    Verifies SA ID, drivers licence, passport + selfie   │
+│           Required for users handling over R5,000 (FICA)       │
+│  Do:      Sign up → get Partner ID and API key                 │
+│           → Add to backend/.env                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2: COMPLETE FEE STRUCTURE (your revenue model)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Every single fee, who pays it, and when — fully transparent.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+A. DELIGHT PLATFORM FEES (your revenue)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Transaction Type              Fee     Who Pays    When Charged
+  ─────────────────────────────────────────────────────────────
+  Person → Person (P2P)         1.5%    Sender      On each send
+  Consumer → Business           2.0%    Consumer    On each payment
+  Business → Business (B2B)     2.0%    Sender      On each payment
+  Ticket Purchase               3.0%    Buyer       On ticket sale
+  Ticket Resale (royalty)       3.0%    Seller      On resale (NFT royalty)
+
+  These fees are deducted automatically from the transaction amount
+  and credited to the Delight platform XRP wallet.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+B. TOP-UP FEES (ZAR → XRP)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  EXAMPLE: User tops up R200
+
+  Step                          Amount      Who takes it
+  ─────────────────────────────────────────────────────
+  User pays ZAR                 R200.00
+  Ozow EFT fee (1.5%)          - R3.00     Ozow
+  VALR exchange fee (0.1%)     - R0.20     VALR
+  XRP delivered to wallet       196.80 ÷ R9.50/XRP = 20.71 XRP
+
+  Using MoonPay instead:
+  MoonPay fee (2–4%)           - R6.00     MoonPay
+  XRP delivered to wallet       194.00 ÷ R9.50/XRP = 20.42 XRP
+
+  Note: You can optionally add your own spread on top of this.
+  Example: Buy at R9.50, sell to user at R9.75 = R0.25 margin per XRP.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+C. CASH OUT FEES (XRP → ZAR)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  EXAMPLE: User cashes out 20 XRP at R9.50/XRP = R190 gross
+
+  Step                          Amount      Who takes it
+  ─────────────────────────────────────────────────────
+  XRP sold on VALR              20 XRP
+  VALR sell fee (0.1%)         - R0.19     VALR
+  PayShap transfer              R0          FREE via PayShap
+  User receives                 R189.81
+
+  Optional: Add Delight cash-out fee (e.g. 0.5%) = R0.95 per R190
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+D. XRPL NETWORK FEE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Every transaction on the XRP Ledger costs 12 drops = 0.000012 XRP
+  At R9.50/XRP this is R0.000114 — effectively zero.
+  This is paid by the sender automatically.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+E. FULL EXAMPLE: USER JOURNEY WITH ALL FEES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. User A (consumer) tops up R500 via Ozow
+     - Ozow fee: R7.50
+     - VALR fee: R0.49
+     - XRP credited: R492.01 ÷ R9.50 = 51.79 XRP
+
+  2. User A pays a street vendor R100 worth of XRP (10.53 XRP)
+     - Delight fee (Consumer→Business 2%): 0.21 XRP (R2.00)
+     - Vendor receives: 10.32 XRP (R98.00)
+     - Delight earns: R2.00
+
+  3. User A buys event ticket (25 XRP = R237.50)
+     - Delight fee (Ticket 3%): 0.75 XRP (R7.13)
+     - Organizer receives: 24.25 XRP (R230.38)
+     - Delight earns: R7.13
+
+  4. User A sends 5 XRP to friend (P2P)
+     - Delight fee (P2P 1.5%): 0.075 XRP (R0.71)
+     - Friend receives: 4.925 XRP (R46.79)
+     - Delight earns: R0.71
+
+  Total Delight revenue from this one user journey: R9.84
+  All on-chain, transparent, real-time.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+F. WHAT THE FEES LOOK LIKE IN THE APP (B2B / P2P labels)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  In the app the fees are shown clearly on the send screen:
+
+    Amount you send:      10.00 XRP
+    Platform fee (1.5%):   0.15 XRP   ← this is "P2P" shown to user
+    Total deducted:       10.15 XRP
+    Recipient receives:   10.00 XRP
+
+  For business payments (shown as "Business Payment"):
+    Amount:               10.00 XRP
+    Platform fee (2.0%):   0.20 XRP   ← shown as "Consumer→Business"
+    Total deducted:       10.20 XRP
+    Recipient receives:   10.00 XRP
+
+  Ticket purchases (shown on event screen):
+    Ticket price:         25.00 XRP
+    Platform fee (3.0%):   0.75 XRP   ← shown as "Ticket fee"
+    Total deducted:       25.75 XRP
+    Organizer receives:   24.25 XRP
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3: STEP-BY-STEP LAUNCH PLAN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TODAY (free, no approvals needed)
+  [1] Create Supabase account → https://supabase.com
+      Run the SQL schema in supabase_service.dart comments
+  [2] Get XRPL testnet wallet → https://faucet.altnet.rippletest.net
+      Add address to .env as PLATFORM_XRP_ADDRESS
+  [3] Create VALR account → https://valr.com (personal for now)
+  [4] Get MoonPay test account → https://dashboard.moonpay.com
+  [5] Deploy backend to Railway → https://railway.app
+      npm install → set env vars → deploy
+
+THIS WEEK
+  [6] Run app on your phone: flutter pub get → flutter run
+  [7] Test send/receive on XRPL testnet (free test XRP)
+  [8] Test MoonPay widget with test card: 4000 0000 0000 0002
+  [9] Apply for Ozow merchant account (3 day approval)
+
+WEEK 2–3
+  [10] Ozow approved → wire webhook → test real EFT top-up
+  [11] Switch XRPL from testnet to mainnet (one env variable)
+  [12] Beta test with 10 real users
+  [13] Apply for FSCA CASP (runs in parallel)
+  [14] Add Firebase push notifications
+
+WEEK 4+
+  [15] Apply for Stitch/PayShap access
+  [16] KYC via Smile Identity for users >R5,000
+  [17] Launch publicly
+  [18] Submit to Google Play Store ($25 once)
+  [19] Submit to Apple App Store ($99/year, needs Mac)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4: USSD (*120#) BANKS — COPY THESE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  These are built into the app's top-up screen already.
+
+  FNB           *120*321#
+  Standard Bank *120*2345#
+  Capitec       *120*3279#
+  ABSA          *120*2272#
+  Nedbank       *120*001#
+  TymeBank      *120*33#
+  African Bank  *120*225#
+  Discovery     *120*3279#
+
+  How it works with Delight:
+  1. User dials their bank's USSD code
+  2. Navigates to "Pay" → "PayShap" or "EFT"
+  3. Enters Delight's ShapID (register at your business bank)
+  4. Enters the reference number shown in the app
+  5. Approves — money leaves their account instantly
+  6. Stitch/Ozow webhook fires → backend buys XRP → credits wallet
+  7. User gets push notification: "R200 → 21.0 XRP added"
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5: ALL LINKS AT A GLANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  SERVICE          SIGN UP LINK                            COST
+  ───────────────────────────────────────────────────────────────
+  Supabase         https://supabase.com                    Free
+  Railway          https://railway.app                     $5/mo
+  XRPL Testnet     https://faucet.altnet.rippletest.net   Free
+  XRPL Docs        https://xrpl.org/docs                  Free
+  VALR             https://valr.com                        0.1% trade
+  MoonPay          https://dashboard.moonpay.com           2–4% tx
+  Ozow             https://ozow.com/developers             1.5% tx
+  Ozow Register    https://merchant.ozow.com/register      Apply
+  Stitch Money     https://stitch.money                    ~1.5% tx
+  PayShap Info     https://www.payshap.co.za               Free rail
+  Firebase         https://console.firebase.google.com     Free
+  Smile Identity   https://usesmileid.com                  $0.50/KYC
+  FSCA CASP        https://www.fsca.co.za                  R1,000
+  Flutter Install  https://docs.flutter.dev/get-started    Free
+  Clash Display    https://www.fontshare.com/fonts/clash-display  Free
+  Satoshi Font     https://www.fontshare.com/fonts/satoshi        Free
+  Play Store       https://play.google.com/console          $25 once
+  App Store        https://developer.apple.com              $99/year
+  ───────────────────────────────────────────────────────────────
